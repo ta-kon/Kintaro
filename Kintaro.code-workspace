@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.autoSave": "afterDelay",
+		"editor.renderWhitespace": "all",
+		"files.trimTrailingWhitespace": true,
+		"editor.formatOnSave": true,
+		"html.format.endWithNewline": true
+	}
+}
