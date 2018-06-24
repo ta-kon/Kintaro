@@ -26,10 +26,8 @@
         // 次の1秒までのミリ秒
         const lessMillSecconds = 1000 - new Date().getMilliseconds();
 
-        const waitMillSeconds = setInterval(function () {
-
-            // タイマー停止
-            clearInterval(waitMillSeconds);
+        // ミリ秒単位で時間を合わせるため、起動時は時間を修正
+        setTimeout(function () {
 
             // １秒後の表示を更新
             updateProgresAll();
@@ -40,7 +38,7 @@
     }
 
     function initBootstrapMaterialDatePicker() {
-        const inputTime = $('body .input-time');
+        const inputTime = $('body').find('.input-time');
 
         inputTime.bootstrapMaterialDatePicker({
             date: false,
@@ -50,6 +48,8 @@
 
         inputTime.change(function () {
             $(this).text($(this).val());
+
+            updateProgresAll();
         });
     }
 
