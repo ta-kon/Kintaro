@@ -14,3 +14,32 @@ a#github {
 .btn.input-time {
     width: 5rem;
 }
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.progress {
+    margin-top: .1rem;
+}
+
+/* bootstrap-material-datetimepicker.min.cssに上書き */
+
+.dtp>.dtp-content>.dtp-date-view>header.dtp-header {
+    background-color: #2B3E50;
+}
+
+.dtp div.dtp-date, .dtp div.dtp-time {
+    background-color: #4E5D6C;
+}
+
+.dtp .dtp-actual-meridien a.selected {
+    background-color: #2B3E50;
+}
+
+.dtp-btn-cancel, .dtp-btn-ok {
+    color: #fff;
+    margin-left: .1rem;
+    background-color: #4E5D6C;
+    border-color: #4E5D6C;
+}

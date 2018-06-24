@@ -14,12 +14,13 @@
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.1.1/superhero/bootstrap.min.css">
 
+
     <!-- datetimepicker -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/css/bootstrap-material-datetimepicker.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/js/bootstrap-material-datetimepicker.min.js"></script>
 
-    <!-- 計算用js -->
+    <!-- original source -->
     <script defer src="kintaroModel.js"></script>
     <script defer src="kintaroCalc.js"></script>
     <link rel="stylesheet" href="kintaro.css">
@@ -80,7 +81,8 @@
                     <td>
                         <input type="text" class="btn btn-secondary input-time" value="18:00" id="workTime-end">
                     </td>
-                    <td id="workTime"></td>
+                    <td id="workTime">
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -96,7 +98,10 @@
                     <td>
                         <input type="text" class="btn btn-secondary input-time" value="13:00" id="breakTime1-end">
                     </td>
-                    <td id="breakTime1"></td>
+                    <td id="breakTime1">
+                        <span name="progress-text" class="badge badge-dark"></span>&nbsp;
+                        <span name="progress-time"></span>
+                    </td>
                 </tr>
                 <tr>
                     <td id="breakTime2-name">夕休憩</td>
@@ -106,7 +111,10 @@
                     <td>
                         <input type="text" class="btn btn-secondary input-time" value="18:30" id="breakTime2-end">
                     </td>
-                    <td id="breakTime2"></td>
+                    <td id="breakTime2">
+                        <span name="progress-text" class="badge badge-dark"></span>&nbsp;
+                        <span name="progress-time"></span>
+                    </td>
                 </tr>
 
                 <tr>
@@ -117,7 +125,10 @@
                     <td>
                         <input type="text" class="btn btn-secondary input-time" value="20:30" id="breakTime3-end">
                     </td>
-                    <td id="breakTime3"></td>
+                    <td id="breakTime3">
+                        <span name="progress-text" class="badge badge-dark"></span>&nbsp;
+                        <span name="progress-time"></span>
+                    </td>
                 </tr>
 
                 <tr>
@@ -128,7 +139,10 @@
                     <td>
                         <input type="text" class="btn btn-secondary input-time" value="22:30" id="breakTime4-end">
                     </td>
-                    <td id="breakTime4"></td>
+                    <td id="breakTime4">
+                        <span name="progress-text" class="badge badge-dark"></span>&nbsp;
+                        <span name="progress-time"></span>
+                    </td>
                 </tr>
 
                 <tr>
@@ -141,7 +155,10 @@
                         <input type="text" class="btn btn-secondary input-time" id="breakTime-other1-end">
                         </button>
                     </td>
-                    <td id="breakTime-other1"></td>
+                    <td id="breakTime-other1">
+                        <span name="progress-text" class="badge badge-dark"></span>&nbsp;
+                        <span name="progress-time"></span>
+                    </td>
                 </tr>
 
                 <tr>
@@ -154,7 +171,10 @@
                         <input type="text" class="btn btn-secondary input-time" id="breakTime-other2-end">
                         </button>
                     </td>
-                    <td id="breakTime-other2"></td>
+                    <td id="breakTime-other2">
+                        <span name="progress-text" class="badge badge-dark"></span>&nbsp;
+                        <span name="progress-time"></span>
+                    </td>
                 </tr>
             </tbody>
         </table>

@@ -53,6 +53,7 @@
 
     function updateProgresAll() {
         const now = new Date();
+        now.setHours(now.getHours() - 11);
 
         MENU.nowDate.text(getTimeDtlText(now));
         updateBreakTime(now);
@@ -162,12 +163,12 @@
     }
 
     function SumBreakTime() {
-        let HalfwayTime = 0;
-        let AfterTime = 0;
+        let halfwayTime = 0;
+        let afterTime = 0;
 
         return {
-            HalfwayTime: HalfwayTime,
-            AfterTime: AfterTime,
+            HalfwayTime: halfwayTime,
+            AfterTime: afterTime,
 
             addDiffTime: function (updateDate, result) {
                 const diffTime = result.diffTime;
@@ -178,10 +179,10 @@
                 const addDiffTime = {
                     Before: function () { },
                     After: function () {
-                        AfterTime += diffTime;
+                        afterTime += diffTime;
                     },
                     Halfway: function () {
-                        HalfwayTime += removeDateMillSeconds(result.timeList.start.date);
+                        halfwayTime += removeDateMillSeconds(result.timeList.start.date);
                     }
                 }
 
@@ -194,35 +195,12 @@
                 };
 
                 return {
-                    halfwayTime: dateObj(HalfwayTime),
-                    afterTime: dateObj(AfterTime),
-                    breakTime: dateObj(HalfwayTime + AfterTime)
+                    halfwayTime: dateObj(halfwayTime),
+                    afterTime: dateObj(afterTime),
+                    breakTime: dateObj(halfwayTime + afterTime)
                 };
             }
         };
-    }
-
-    function viewLessTime(breakProgres) {
-
-        const result = breakProgres.result;
-
-        if (isNaN(result.diffTime)) {
-            return "";
-        }
-
-        const view = {
-            Before: function () {
-                return "あと: " + result.timeList.start.timeDtlText;
-            },
-            Halfway: function () {
-                return "残り: " + result.timeList.end.timeDtlText;
-            },
-            After: function () {
-                return "経過: " + result.timeList.end.timeDtlText;
-            }
-        };
-
-        return view[result.Less.is]();
     }
 
     function updateBreakTime(now) {
@@ -235,13 +213,68 @@
             const breakTime = BREAK_TIME[break_name];
             const breakProgres = progres.breakProgres[break_name];
 
-            breakTime.progres.html(viewLessTime(breakProgres));
+            const progresHtml = getProgressText(breakProgres);
+
+            updateProgress(breakTime.progres, progresHtml);
         }
 
         const workTime = progres.workProgres.workTime;
         setMenuText(workTime);
 
         $('#debug').text(JSON.stringify(progres.workProgres));
+    }
+
+    function updateProgress(breakTimeProgress, progresHtml) {
+        const setFunction = {
+            progressBar: function () {
+                const progressElement = breakTimeProgress.find('.progress');
+                const existsProgressElement = (progressElement[0] !== undefined);
+
+                if (progresHtml !== undefined && progresHtml.progres) {
+                    if (!existsProgressElement) {
+                        breakTimeProgress.append(progresHtml.progres.innerHtml);
+                    }
+                    else {
+                        // 小要素の取得
+                        const progressBar = progressElement.find('.progress-bar');
+                        progressBar.css('width', Number(progresHtml.progres.rate) + '%');
+
+                        const className = 'progress-bar progress-bar-striped '
+                            + sanitaize(progresHtml.progres.type)
+                            + ' progress-bar-animated';
+                        progressBar.removeClass();
+                        progressBar.addClass(className);
+                    }
+                }
+                else {
+                    if (existsProgressElement) {
+                        progressElement.remove();
+                    }
+                }
+            },
+
+            progressTime: function () {
+                const progressTime = breakTimeProgress.find('*[name="progress-time"]');
+                progressTime.text(progresHtml !== undefined ? progresHtml.time : undefined);
+            },
+
+            progressText: function () {
+                const progressText = breakTimeProgress.find('*[name="progress-text"]');
+                // 経過　残り　あと [経過: 05:14:36]
+                progressText.removeClass();
+
+                if (progresHtml !== undefined) {
+                    progressText.addClass(progresHtml.bageClass);
+                    progressText.text(progresHtml.text);
+                } else {
+                    progressText.text();
+                }
+            },
+        };
+
+        setFunction.progressText();
+        setFunction.progressTime();
+        setFunction.progressBar();
     }
 
     function setMenuText(workTime) {
