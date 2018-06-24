@@ -9,7 +9,6 @@ const TIME_MODEL = (function () {
     };
 
     const WORK = {
-        realTime: BreakTime('#real'),
         time: BreakTime('#workTime'),
     };
 

@@ -15,8 +15,8 @@
     function initTime() {
         const timeText = FillDate(new Date()).timeText;
 
-        WORK.realTime.end.tag.val(timeText);
-        WORK.realTime.end.tag.text(timeText);
+        WORK.time.end.tag.val(timeText);
+        WORK.time.end.tag.text(timeText);
 
         updateProgresAll();
     }
@@ -43,12 +43,10 @@
         inputTime.bootstrapMaterialDatePicker({
             date: false,
             shortTime: true, // enable AM or PM
-            format: 'HH:mm'
+            format: 'HH:mm',
         });
 
         inputTime.change(function () {
-            $(this).text($(this).val());
-
             updateProgresAll();
         });
     }
