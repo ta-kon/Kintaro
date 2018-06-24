@@ -1,0 +1,16 @@
+body {
+    padding-top: 7rem;
+}
+
+a#github {
+    padding: 10px 50px 10px 10px;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    float: right;
+    color: #fff;
+    background: url(https://pages-themes.github.io/slate/assets/images/blacktocat.png) #0090ff no-repeat 95% 50%;
+}
+
+.btn.input-time {
+    width: 5rem;
+}
