@@ -108,7 +108,7 @@
         const timeResult = isTime(timeList);
 
         for (let time in timeResult) {
-            if (timeResult[time]) {
+            if (timeResult[time] === true) {
                 return time;
             }
         }
@@ -173,7 +173,7 @@
             addDiffTime: function (updateDate, result) {
                 const diffTime = result.diffTime;
                 if (isNaN(diffTime)) {
-                    return;
+                    return false;
                 }
 
                 const addDiffTime = {
@@ -187,6 +187,8 @@
                 }
 
                 addDiffTime[result.Less.is]();
+
+                return true;
             },
 
             result: function (now) {
@@ -230,27 +232,29 @@
                 const progressElement = breakTimeProgress.find('.progress');
                 const existsProgressElement = (progressElement[0] !== undefined);
 
-                if (progresHtml !== undefined && progresHtml.progres) {
-                    if (!existsProgressElement) {
-                        breakTimeProgress.append(progresHtml.progres.innerHtml);
-                    }
-                    else {
-                        // 小要素の取得
-                        const progressBar = progressElement.find('.progress-bar');
-                        progressBar.css('width', Number(progresHtml.progres.rate) + '%');
+                if (progresHtml === undefined || progresHtml.progres !== undefined) {
 
-                        const className = 'progress-bar progress-bar-striped '
-                            + sanitaize(progresHtml.progres.type)
-                            + ' progress-bar-animated';
-                        progressBar.removeClass();
-                        progressBar.addClass(className);
-                    }
-                }
-                else {
                     if (existsProgressElement) {
                         progressElement.remove();
                     }
+                    return;
                 }
+
+                if (!existsProgressElement) {
+                    breakTimeProgress.append(progresHtml.progres.innerHtml);
+
+                    return;
+                }
+
+                // 小要素の取得
+                const progressBar = progressElement.find('.progress-bar');
+                progressBar.css('width', Number(progresHtml.progres.rate) + '%');
+
+                const className = 'progress-bar progress-bar-striped '
+                    + sanitaize(progresHtml.progres.type)
+                    + ' progress-bar-animated';
+                progressBar.removeClass();
+                progressBar.addClass(className);
             },
 
             progressTime: function () {
@@ -263,12 +267,13 @@
                 // 経過　残り　あと [経過: 05:14:36]
                 progressText.removeClass();
 
-                if (progresHtml !== undefined) {
-                    progressText.addClass(progresHtml.bageClass);
-                    progressText.text(progresHtml.text);
-                } else {
+                if (progresHtml === undefined) {
                     progressText.text();
+                    return;
                 }
+
+                progressText.addClass(progresHtml.bageClass);
+                progressText.text(progresHtml.text);
             },
         };
 
@@ -305,7 +310,7 @@
             breakTime: breakTime,
             passsStartDate: passsStartDate,
             workTime: workTime
-        }
+        };
 
         return {
             workProgres: workProgres,
