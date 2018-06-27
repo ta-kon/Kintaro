@@ -230,17 +230,17 @@
         const setFunction = {
             progressBar: function () {
                 const progressElement = breakTimeProgress.find('.progress');
-                const existsProgressElement = (progressElement[0] !== undefined);
+                const existProgressElement = (progressElement[0] !== undefined);
 
-                if (progresHtml === undefined || progresHtml.progres !== undefined) {
+                if (progresHtml === undefined || progresHtml.progres === undefined) {
 
-                    if (existsProgressElement) {
+                    if (existProgressElement) {
                         progressElement.remove();
                     }
                     return;
                 }
 
-                if (!existsProgressElement) {
+                if (!existProgressElement) {
                     breakTimeProgress.append(progresHtml.progres.innerHtml);
 
                     return;
