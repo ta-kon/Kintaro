@@ -1,57 +1,68 @@
 "use strict";
 
-(function () {
+$(document).ready(function () {
+    initTime();
+    initBootstrapMaterialDatePicker();
+
+    setIntervalUpdateProgres();
+});
+
+function updateProgresAll() {
+    const now = new Date();
+    now.setHours(now.getHours() - 5);
+
+    KINTARO_MODEL.MENU.nowDate.text(KINTARO_CALC.getTimeDtlText(now));
+
+    const progres = KINTARO_CALC.progresTime(now);
+    KINTARO_VIEW.viewUpdateProgres(progres);
+};
+
+function initTime() {
+    const timeText = KINTARO_CALC.FillDate(new Date()).timeText;
+
     const WORK = KINTARO_MODEL.WORK;
+    WORK.time.end.tag.val(timeText);
+    WORK.time.end.tag.text(timeText);
 
-    $(document).ready(function () {
-        initTime();
-        initBootstrapMaterialDatePicker();
+    updateProgresAll();
+}
 
-        setIntervalUpdateProgres();
+function setIntervalUpdateProgres() {
+
+    // 次の1秒までのミリ秒
+    const lessMillSecconds = 1000 - new Date().getMilliseconds();
+
+    // ミリ秒単位で時間を合わせるため、起動時は時間を修正
+    setTimeout(function () {
+
+        // １秒後の表示を更新
+        updateProgresAll();
+
+        // タイマーを設定
+        setInterval(updateProgresAll, 1000);
+    }, lessMillSecconds);
+}
+
+function initBootstrapMaterialDatePicker() {
+    const inputTime = $('body').find('.input-time');
+
+    inputTime.bootstrapMaterialDatePicker({
+        date: false,
+        shortTime: true, // enable AM or PM
+        format: 'HH:mm',
     });
 
-    function initTime() {
-        const timeText = FillDate(new Date()).timeText;
-
-        WORK.time.end.tag.val(timeText);
-        WORK.time.end.tag.text(timeText);
-
+    inputTime.change(function () {
         updateProgresAll();
-    }
+    });
+}
 
-    function setIntervalUpdateProgres() {
+const KINTARO_VIEW = (function () {
+    return {
+        viewUpdateProgres: viewUpdateProgres
+    };
 
-        // 次の1秒までのミリ秒
-        const lessMillSecconds = 1000 - new Date().getMilliseconds();
-
-        // ミリ秒単位で時間を合わせるため、起動時は時間を修正
-        setTimeout(function () {
-
-            // １秒後の表示を更新
-            updateProgresAll();
-
-            // タイマーを設定
-            setInterval(updateProgresAll, 1000);
-        }, lessMillSecconds);
-    }
-
-    function initBootstrapMaterialDatePicker() {
-        const inputTime = $('body').find('.input-time');
-
-        inputTime.bootstrapMaterialDatePicker({
-            date: false,
-            shortTime: true, // enable AM or PM
-            format: 'HH:mm',
-        });
-
-        inputTime.change(function () {
-            updateProgresAll();
-        });
-    }
-})();
-
-const KINTARO_VIEW = {
-    viewUpdateProgres = function (progres) {
+    function viewUpdateProgres(progres) {
 
         for (let break_name in BREAK_TIME) {
             const breakTime = BREAK_TIME[break_name];
@@ -66,8 +77,9 @@ const KINTARO_VIEW = {
         setMenuText(workTime);
 
         $('#debug').text(JSON.stringify(progres.workProgres));
-    },
-};
+    }
+})();
+
 
 function sanitaize(str) {
     return str.replace(/&/g, '&amp;')
@@ -118,7 +130,7 @@ function getProgressText(breakProgres) {
 }
 
 function setMenuText(workTime) {
-    MENU.realTime.text(getTimeDtlText(workTime));
+    MENU.realTime.text(KINTARO_CALC.getTimeDtlText(workTime));
     MENU.realTime_dec.text(Format.HourDecTime(getHourDecTime(workTime)) + 'H');
 }
 
@@ -166,4 +178,10 @@ function makeProgressInnerHtml(type, rate) {
         type, type,
         rate: rate
     };
+}
+
+// debug用項目
+Date.prototype.toJSON = function () {
+    return this.getFullYear() + '-' + ('0' + (this.getMonth() + 1)).slice(-2) + '-' + ('0' + this.getDate()).slice(-2) + 'T ' +
+        ('0' + this.getHours()).slice(-2) + ':' + ('0' + this.getMinutes()).slice(-2) + ':' + ('0' + this.getSeconds()).slice(-2) + 'Z';
 }
