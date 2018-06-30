@@ -27,6 +27,13 @@ Date.prototype.getTimeDtlText = function () {
     return hours + ":" + minutes + ":" + seconds;
 };
 
+Date.prototype.getHourDecTime = function () {
+    const hours = this.getHours();
+    const minutes = this.getMinutes();
+
+    return hours + (minutes / 60);
+};
+
 Date.prototype.makeTimeTextDate = function (timeDtlText) {
     const date = new Date(this.getTime());
 

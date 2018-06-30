@@ -11,7 +11,7 @@ function updateProgresAll() {
     const now = new Date();
     now.setHours(12);
 
-    KINTARO_MODEL.MENU.nowDate.text(getTimeDtlText(now));
+    KINTARO_MODEL.MENU.nowDate.text(now.getTimeDtlText());
 
     const progres = progresTime(now);
     updateProgres(progres);
@@ -185,15 +185,8 @@ function getProgressText(breakProgres) {
 function setMenuText(workTime) {
     const MENU = KINTARO_MODEL.MENU;
 
-    MENU.realTime.text(getTimeDtlText(workTime));
-    MENU.realTime_dec.text(Format.HourDecTime(getHourDecTime(workTime)) + 'H');
-}
-
-function getHourDecTime(date) {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    return hours + (minutes / 60);
+    MENU.realTime.text(workTime.getTimeDtlText());
+    MENU.realTime_dec.text(Format.HourDecTime(workTime.getHourDecTime()) + 'H');
 }
 
 function makeProgressBar(rate) {
