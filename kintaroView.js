@@ -11,14 +11,14 @@ function updateProgresAll() {
     const now = new Date();
     now.setHours(now.getHours() - 5);
 
-    KINTARO_MODEL.MENU.nowDate.text(KINTARO_CALC.getTimeDtlText(now));
+    KINTARO_MODEL.MENU.nowDate.text(getTimeDtlText(now));
 
-    const progres = KINTARO_CALC.progresTime(now);
+    const progres = progresTime(now);
     KINTARO_VIEW.viewUpdateProgres(progres);
 };
 
 function initTime() {
-    const timeText = KINTARO_CALC.FillDate(new Date()).timeText;
+    const timeText = FillDate(new Date()).timeText;
 
     const WORK = KINTARO_MODEL.WORK;
     WORK.time.end.tag.val(timeText);
@@ -130,7 +130,9 @@ function getProgressText(breakProgres) {
 }
 
 function setMenuText(workTime) {
-    MENU.realTime.text(KINTARO_CALC.getTimeDtlText(workTime));
+    const MENU = KINTARO_MODEL.MENU;
+
+    MENU.realTime.text(getTimeDtlText(workTime));
     MENU.realTime_dec.text(Format.HourDecTime(getHourDecTime(workTime)) + 'H');
 }
 

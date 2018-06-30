@@ -1,11 +1,5 @@
 ﻿"use strict";
 
-const KINTARO_CALC = {
-    progresTime: progresTime,
-    FillDate: FillDate,
-    getTimeDtlText: getTimeDtlText,
-};
-
 function FillDate(date) {
     const _Fill = Format.Fill.Zero2;
 
@@ -35,7 +29,6 @@ function removeMillSec(date) {
 function subDate(currentDate, limitDate) {
 
     const diffMillSecconds = Math.abs(removeMillSec(currentDate) - removeMillSec(limitDate));
-
     const subTime = setMillSecconds(currentDate, diffMillSecconds)
 
     return { time: subTime, isBefore: (currentDate < limitDate) };
@@ -116,40 +109,42 @@ function SumBreakTime() {
     return {
         HalfwayTime: halfwayTime,
         AfterTime: afterTime,
-
-        addDiffTime: function (result) {
-            const diffTime = result.diffTime;
-            if (isNaN(diffTime)) {
-                return false;
-            }
-
-            const addDiffTime = {
-                Before: function () { },
-                After: function () {
-                    afterTime += diffTime;
-                },
-                Halfway: function () {
-                    halfwayTime += removeDateMillSeconds(result.timeList.start.date);
-                }
-            }
-
-            addDiffTime[result.Less.is]();
-
-            return true;
-        },
-
-        result: function (now) {
-            const dateObj = function (millSecconds) {
-                return setMillSecconds(now, millSecconds);
-            };
-
-            return {
-                halfwayTime: dateObj(halfwayTime),
-                afterTime: dateObj(afterTime),
-                breakTime: dateObj(halfwayTime + afterTime)
-            };
-        }
+        addDiffTime: addDiffTime,
+        result: breakTimeResult,
     };
+
+    function breakTimeResult(now) {
+        const dateObj = function (millSecconds) {
+            return setMillSecconds(now, millSecconds);
+        };
+
+        return {
+            halfwayTime: dateObj(halfwayTime),
+            afterTime: dateObj(afterTime),
+            breakTime: dateObj(halfwayTime + afterTime)
+        };
+    }
+
+    function addDiffTime(result) {
+        const diffTime = result.diffTime;
+        if (isNaN(diffTime)) {
+            return false;
+        }
+
+        const addDiffTime = {
+            Before: function () { },
+            After: function () {
+                afterTime += diffTime;
+            },
+            Halfway: function () {
+                halfwayTime += removeDateMillSeconds(result.timeList.start.date);
+            }
+        }
+
+        addDiffTime[result.Less.is]();
+
+        return true;
+    }
 }
 
 function progresTime(currentDate) {
