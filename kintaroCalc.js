@@ -1,25 +1,7 @@
 ﻿"use strict";
 
-function FillDate(date) {
-    const _Fill = Format.Fill.Zero2;
-
-    const hours = _Fill(date.getHours());
-    const minutes = _Fill(date.getMinutes());
-    const seconds = _Fill(date.getSeconds());
-    const timeText = hours + ":" + minutes;
-    const timeDtlText = timeText + ":" + seconds;
-
-    return {
-        hours: hours,
-        minutes: minutes,
-        seconds: seconds,
-        timeText: timeText,
-        timeDtlText: timeDtlText
-    };
-}
-
 function getTimeDtlText(date) {
-    return FillDate(date).timeDtlText;
+    return date.getTimeDtlText();
 }
 
 function removeMillSec(date) {
@@ -77,7 +59,7 @@ function makeResult(currentDate, limitDate) {
 
         const result = {
             date: sub.time,
-            timeDtlText: getTimeDtlText(sub.time),
+            timeDtlText: sub.time.getTimeDtlText(),
             isBefore: sub.isBefore,
         };
 

@@ -56,7 +56,9 @@ function BreakTime(timeName) {
         return {
             tag: timeSelector,
             timeTextDate: function (now) {
-                const date = timeTextDate(now, timeSelector.val());
+
+                const date = now.makeTimeTextDate(timeSelector.val());
+                const workTime = KINTARO_MODEL.WORK.time;
 
                 if (selector === '#workTime-start' || selector === '#workTime-end') {
                     return date;
@@ -73,21 +75,6 @@ function BreakTime(timeName) {
                 return date;
             }
         };
-    }
-
-    function timeTextDate(time, timeDtlText) {
-
-        const date = new Date(time);
-        date.setHours(parseInt(timeDtlText.slice(0, 2)));
-        date.setMinutes(parseInt(timeDtlText.slice(3, 5)));
-
-        if (timeDtlText.length >= 8) {
-            date.setSeconds(parseInt(timeDtlText.slice(6, 8)));
-        } else {
-            date.setSeconds(0);
-        }
-
-        return date;
     }
 }
 
@@ -121,12 +108,7 @@ function setMillSecconds(date, millSecconds) {
 }
 
 function removeDateMillSeconds(date) {
-    const hours = date.getHours();
-    const minutes = (hours * 60) + date.getMinutes();
-    const seconds = (minutes * 60) + date.getSeconds();
-    const millSecconds = (seconds * 1000) + date.getMilliseconds();
-
-    return millSecconds;
+    return date.removeDateMillSeconds();
 }
 
 function floor(num, digit) {

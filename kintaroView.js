@@ -9,16 +9,16 @@ $(document).ready(function () {
 
 function updateProgresAll() {
     const now = new Date();
-    now.setHours(now.getHours() - 5);
+    now.setHours(12);
 
     KINTARO_MODEL.MENU.nowDate.text(getTimeDtlText(now));
 
     const progres = progresTime(now);
-    KINTARO_VIEW.viewUpdateProgres(progres);
+    updateProgres(progres);
 };
 
 function initTime() {
-    const timeText = FillDate(new Date()).timeText;
+    const timeText = new Date().getTimeDtlText();
 
     const WORK = KINTARO_MODEL.WORK;
     WORK.time.end.tag.val(timeText);
@@ -57,29 +57,82 @@ function initBootstrapMaterialDatePicker() {
     });
 }
 
-const KINTARO_VIEW = (function () {
-    return {
-        viewUpdateProgres: viewUpdateProgres
-    };
+function updateProgres(progres) {
+    const BREAK_TIME = KINTARO_MODEL.BREAK_TIME;
 
-    function viewUpdateProgres(progres) {
+    for (let break_name in BREAK_TIME) {
+        const breakTime = BREAK_TIME[break_name];
+        const breakProgres = progres.breakProgres[break_name];
 
-        for (let break_name in BREAK_TIME) {
-            const breakTime = BREAK_TIME[break_name];
-            const breakProgres = progres.breakProgres[break_name];
+        const progresHtml = getProgressText(breakProgres);
 
-            const progresHtml = getProgressText(breakProgres);
+        updateProgress(breakTime.progres, progresHtml);
+    }
 
-            updateProgress(breakTime.progres, progresHtml);
+    const workTime = progres.workProgres.workTime;
+    setMenuText(workTime);
+
+    $('#debug').text(JSON.stringify(progres.workProgres));
+}
+
+function updateProgress(breakTimeProgress, progresHtml) {
+
+    return (function main() {
+        progressText();
+        progressTime();
+        progressBar();
+
+        return undefined;
+    })();
+
+    function progressBar() {
+        const progressElement = breakTimeProgress.find('.progress');
+        const existProgressElement = (progressElement[0] !== undefined);
+
+        if (progresHtml === undefined || progresHtml.progres === undefined) {
+
+            if (existProgressElement) {
+                progressElement.remove();
+            }
+            return;
         }
 
-        const workTime = progres.workProgres.workTime;
-        setMenuText(workTime);
+        if (!existProgressElement) {
+            breakTimeProgress.append(progresHtml.progres.innerHtml);
 
-        $('#debug').text(JSON.stringify(progres.workProgres));
+            return;
+        }
+
+        // 小要素の取得
+        const progressBar = progressElement.find('.progress-bar');
+        progressBar.css('width', Number(progresHtml.progres.rate) + '%');
+
+        const className = 'progress-bar progress-bar-striped '
+            + sanitaize(progresHtml.progres.type)
+            + ' progress-bar-animated';
+        progressBar.removeClass();
+        progressBar.addClass(className);
     }
-})();
 
+    function progressTime() {
+        const progressTime = breakTimeProgress.find('*[name="progress-time"]');
+        progressTime.text(progresHtml !== undefined ? progresHtml.time : undefined);
+    }
+
+    function progressText() {
+        const progressText = breakTimeProgress.find('*[name="progress-text"]');
+        // 経過　残り　あと [経過: 05:14:36]
+        progressText.removeClass();
+
+        if (progresHtml === undefined) {
+            progressText.text();
+            return;
+        }
+
+        progressText.addClass(progresHtml.bageClass);
+        progressText.text(progresHtml.text);
+    }
+}
 
 function sanitaize(str) {
     return str.replace(/&/g, '&amp;')
@@ -180,10 +233,4 @@ function makeProgressInnerHtml(type, rate) {
         type, type,
         rate: rate
     };
-}
-
-// debug用項目
-Date.prototype.toJSON = function () {
-    return this.getFullYear() + '-' + ('0' + (this.getMonth() + 1)).slice(-2) + '-' + ('0' + this.getDate()).slice(-2) + 'T ' +
-        ('0' + this.getHours()).slice(-2) + ':' + ('0' + this.getMinutes()).slice(-2) + ':' + ('0' + this.getSeconds()).slice(-2) + 'Z';
 }
