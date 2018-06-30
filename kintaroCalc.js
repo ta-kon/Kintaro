@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 (function () {
     const MENU = TIME_MODEL.MENU;
@@ -53,7 +53,7 @@
 
     function updateProgresAll() {
         const now = new Date();
-        now.setHours(now.getHours() - 11);
+        now.setHours(now.getHours() - 5);
 
         MENU.nowDate.text(getTimeDtlText(now));
         updateBreakTime(now);

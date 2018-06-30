@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 const TIME_MODEL = (function () {
 
@@ -19,7 +19,7 @@ const TIME_MODEL = (function () {
         midnight: BreakTime('#breakTime4'),
         other1: BreakTime('#breakTime-other1'),
         other2: BreakTime('#breakTime-other2'),
-    }
+    };
 
     function BreakTime(timeName) {
 
