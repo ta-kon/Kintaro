@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-const TIME_MODEL = (function () {
+const KINTARO_MODEL = (function () {
 
     const MENU = {
         nowDate: $('#menu-nowDate'),
@@ -130,93 +130,6 @@ function floor(num, digit) {
     const calcDigit = Math.pow(10, -digit);
     const number = num * calcDigit;
     return Math.floor(number) / calcDigit;
-}
-
-function sanitaize(str) {
-    return str.replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
-
-function getProgressText(breakProgres) {
-
-    const result = breakProgres.result;
-
-    if (isNaN(result.diffTime)) {
-        return undefined;
-    }
-
-    const view = {
-        Before: function () {
-            return {
-                bageClass: 'badge badge-dark',
-                text: "あと",
-                time: result.timeList.start.timeDtlText,
-            };
-        },
-        Halfway: function () {
-            const millSeconds = removeDateMillSeconds(result.timeList.end.date);
-            const diffTime = (result.diffTime === 0 ? millSeconds : result.diffTime);
-            const rate = Math.abs(floor(((millSeconds / diffTime) * 100), -2));
-
-            return {
-                bageClass: 'badge badge-dark',
-                text: "残り",
-                time: result.timeList.end.timeDtlText,
-                progres: makeProgressBar(rate),
-            };
-        },
-        After: function () {
-            return {
-                bageClass: 'badge badge-pill badge-dark',
-                text: "経過",
-                time: result.timeList.end.timeDtlText,
-            };
-        }
-    };
-
-    return view[result.Less.is]();
-}
-
-function makeProgressBar(rate) {
-    const progressType = [
-        'bg-danger',
-        'bg-warning',
-        'bg-info',
-        'bg-success'
-    ];
-
-    const rateType = (function () {
-        // 100%丁度の場合
-        // progressType.lengthが得られ、配列外を参照してしまうため。
-        if (rate === 100) {
-            return (progressType.length - 1);
-        }
-
-        const rateTypeSize = (100 / progressType.length);
-        return Math.floor(rate / rateTypeSize);
-    })();
-
-    return makeProgressInnerHtml(progressType[rateType], rate);
-}
-
-function makeProgressInnerHtml(type, rate) {
-
-    let innerHtml = '';
-    innerHtml += '<div class="progress">'
-    innerHtml += '<div class="progress-bar progress-bar-striped ';
-    innerHtml += sanitaize(type);
-    innerHtml += ' progress-bar-animated" role = "progressbar" ';
-    innerHtml += 'style = "width: ' + Number(rate) + '%" >';
-    innerHtml += '</div ></div >';
-
-    return {
-        innerHtml: innerHtml,
-        type, type,
-        rate: rate
-    };
 }
 
 // debug用項目

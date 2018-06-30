@@ -1,55 +1,9 @@
 ﻿"use strict";
 
 (function () {
-    const MENU = TIME_MODEL.MENU;
-    const WORK = TIME_MODEL.WORK;
-    const BREAK_TIME = TIME_MODEL.BREAK_TIME;
-
-    $(document).ready(function () {
-        initTime();
-        initBootstrapMaterialDatePicker();
-
-        setIntervalUpdateProgres();
-    });
-
-    function initTime() {
-        const timeText = FillDate(new Date()).timeText;
-
-        WORK.time.end.tag.val(timeText);
-        WORK.time.end.tag.text(timeText);
-
-        updateProgresAll();
-    }
-
-    function setIntervalUpdateProgres() {
-
-        // 次の1秒までのミリ秒
-        const lessMillSecconds = 1000 - new Date().getMilliseconds();
-
-        // ミリ秒単位で時間を合わせるため、起動時は時間を修正
-        setTimeout(function () {
-
-            // １秒後の表示を更新
-            updateProgresAll();
-
-            // タイマーを設定
-            setInterval(updateProgresAll, 1000);
-        }, lessMillSecconds);
-    }
-
-    function initBootstrapMaterialDatePicker() {
-        const inputTime = $('body').find('.input-time');
-
-        inputTime.bootstrapMaterialDatePicker({
-            date: false,
-            shortTime: true, // enable AM or PM
-            format: 'HH:mm',
-        });
-
-        inputTime.change(function () {
-            updateProgresAll();
-        });
-    }
+    const MENU = KINTARO_MODEL.MENU;
+    const WORK = KINTARO_MODEL.WORK;
+    const BREAK_TIME = KINTARO_MODEL.BREAK_TIME;
 
     function updateProgresAll() {
         const now = new Date();
@@ -210,83 +164,6 @@
         viewUpdateProgres(progres);
     }
 
-    function viewUpdateProgres(progres) {
-        for (let break_name in BREAK_TIME) {
-            const breakTime = BREAK_TIME[break_name];
-            const breakProgres = progres.breakProgres[break_name];
-
-            const progresHtml = getProgressText(breakProgres);
-
-            updateProgress(breakTime.progres, progresHtml);
-        }
-
-        const workTime = progres.workProgres.workTime;
-        setMenuText(workTime);
-
-        $('#debug').text(JSON.stringify(progres.workProgres));
-    }
-
-    function updateProgress(breakTimeProgress, progresHtml) {
-        const setFunction = {
-            progressBar: function () {
-                const progressElement = breakTimeProgress.find('.progress');
-                const existProgressElement = (progressElement[0] !== undefined);
-
-                if (progresHtml === undefined || progresHtml.progres === undefined) {
-
-                    if (existProgressElement) {
-                        progressElement.remove();
-                    }
-                    return;
-                }
-
-                if (!existProgressElement) {
-                    breakTimeProgress.append(progresHtml.progres.innerHtml);
-
-                    return;
-                }
-
-                // 小要素の取得
-                const progressBar = progressElement.find('.progress-bar');
-                progressBar.css('width', Number(progresHtml.progres.rate) + '%');
-
-                const className = 'progress-bar progress-bar-striped '
-                    + sanitaize(progresHtml.progres.type)
-                    + ' progress-bar-animated';
-                progressBar.removeClass();
-                progressBar.addClass(className);
-            },
-
-            progressTime: function () {
-                const progressTime = breakTimeProgress.find('*[name="progress-time"]');
-                progressTime.text(progresHtml !== undefined ? progresHtml.time : undefined);
-            },
-
-            progressText: function () {
-                const progressText = breakTimeProgress.find('*[name="progress-text"]');
-                // 経過　残り　あと [経過: 05:14:36]
-                progressText.removeClass();
-
-                if (progresHtml === undefined) {
-                    progressText.text();
-                    return;
-                }
-
-                progressText.addClass(progresHtml.bageClass);
-                progressText.text(progresHtml.text);
-            },
-        };
-
-        setFunction.progressText();
-        setFunction.progressTime();
-        setFunction.progressBar();
-    }
-
-    function setMenuText(workTime) {
-        MENU.realTime.text(getTimeDtlText(workTime));
-        MENU.realTime_dec.text(Format.HourDecTime(getHourDecTime(workTime)) + 'H');
-    }
-
     function progresTime(currentDate) {
 
         const sum = SumBreakTime();
@@ -316,12 +193,5 @@
             workProgres: workProgres,
             breakProgres: breakProgres
         };
-    }
-
-    function getHourDecTime(date) {
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-
-        return hours + (minutes / 60);
     }
 })();
