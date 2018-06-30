@@ -8,8 +8,10 @@ Date.prototype.removeDateMillSeconds = function () {
 };
 
 Date.prototype.toJSON = function () {
-    return this.getFullYear() + '-' + ('0' + (this.getMonth() + 1)).slice(-2) + '-' + ('0' + this.getDate()).slice(-2) + 'T ' +
-        ('0' + this.getHours()).slice(-2) + ':' + ('0' + this.getMinutes()).slice(-2) + ':' + ('0' + this.getSeconds()).slice(-2) + 'Z';
+    const date = this.getFullYear() + '-' + ('0' + (this.getMonth() + 1)).slice(-2) + '-' + ('0' + this.getDate()).slice(-2) + 'T ';
+    const time = this.getTimeDtlText() + 'Z';
+
+    return date + time;
 };
 
 Date.prototype.getTimeDtlText = function () {
@@ -21,9 +23,8 @@ Date.prototype.getTimeDtlText = function () {
     const hours = fillZero2(this.getHours());
     const minutes = fillZero2(this.getMinutes());
     const seconds = fillZero2(this.getSeconds());
-    const timeText = hours + ":" + minutes;
 
-    return timeText + ":" + seconds;
+    return hours + ":" + minutes + ":" + seconds;
 };
 
 Date.prototype.makeTimeTextDate = function (timeDtlText) {
