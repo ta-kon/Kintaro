@@ -159,7 +159,7 @@ function getProgressText(breakProgres) {
             };
         },
         Halfway: function () {
-            const millSeconds = removeDateMillSeconds(result.timeList.end.date);
+            const millSeconds = result.timeList.end.date.removeMillSeconds();
             const diffTime = (result.diffTime === 0 ? millSeconds : result.diffTime);
             const rate = Math.abs(floor(((millSeconds / diffTime) * 100), -2));
 
@@ -186,7 +186,7 @@ function setMenuText(workTime) {
     const MENU = KINTARO_MODEL.MENU;
 
     MENU.realTime.text(workTime.getTimeDtlText());
-    MENU.realTime_dec.text(Format.HourDecTime(workTime.getHourDecTime()) + 'H');
+    MENU.realTime_dec.text(workTime.getHourDecTimeText() + 'H');
 }
 
 function makeProgressBar(rate) {

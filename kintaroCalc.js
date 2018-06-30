@@ -11,7 +11,7 @@ function removeMillSec(date) {
 function subDate(currentDate, limitDate) {
 
     const diffMillSecconds = Math.abs(removeMillSec(currentDate) - removeMillSec(limitDate));
-    const subTime = setMillSecconds(currentDate, diffMillSecconds)
+    const subTime = currentDate.createHoursMillSecconds(diffMillSecconds);
 
     return { time: subTime, isBefore: (currentDate < limitDate) };
 }
@@ -97,7 +97,7 @@ function SumBreakTime() {
 
     function breakTimeResult(now) {
         const dateObj = function (millSecconds) {
-            return setMillSecconds(now, millSecconds);
+            return now.createHoursMillSecconds(millSecconds);
         };
 
         return {
@@ -119,7 +119,7 @@ function SumBreakTime() {
                 afterTime += diffTime;
             },
             Halfway: function () {
-                halfwayTime += removeDateMillSeconds(result.timeList.start.date);
+                halfwayTime += result.timeList.start.date.removeMillSeconds();
             }
         }
 
@@ -147,8 +147,8 @@ function progresTime(currentDate) {
     const WORK = KINTARO_MODEL.WORK;
     const breakTime = sum.result(currentDate).breakTime;
     const startDate = WORK.time.start.timeTextDate(currentDate);
-    const passsStartDate = setMillSecconds(currentDate, (currentDate - startDate));
-    const workTime = setMillSecconds(currentDate, (passsStartDate - breakTime));
+    const passsStartDate = currentDate.createHoursMillSecconds(currentDate - startDate);
+    const workTime = currentDate.createHoursMillSecconds(passsStartDate - breakTime);
 
     const workProgres = {
         breakTime: breakTime,

@@ -1,4 +1,4 @@
-Date.prototype.removeDateMillSeconds = function () {
+Date.prototype.removeMillSeconds = function () {
     const hours = this.getHours();
     const minutes = (hours * 60) + this.getMinutes();
     const seconds = (minutes * 60) + this.getSeconds();
@@ -34,8 +34,18 @@ Date.prototype.getHourDecTime = function () {
     return hours + (minutes / 60);
 };
 
-Date.prototype.makeTimeTextDate = function (timeDtlText) {
-    const date = new Date(this.getTime());
+Date.prototype.getHourDecTimeText = function () {
+    const decTime = this.getHourDecTime();
+
+    const hour = ('0' + floor(decTime, 0)).slice(-2);
+    const minutes = ('0' + (floor(decTime, -2) * 100)).slice(-2)
+
+    // 例: 0.30, 1.25
+    return hour + '.' + minutes;
+};
+
+Date.prototype.createTimeTextDate = function (timeDtlText) {
+    const date = new Date(this);
 
     date.setHours(parseInt(timeDtlText.slice(0, 2)));
     date.setMinutes(parseInt(timeDtlText.slice(3, 5)));
@@ -49,3 +59,13 @@ Date.prototype.makeTimeTextDate = function (timeDtlText) {
 
     return date;
 };
+
+Date.prototype.createHoursMillSecconds = function(millSecconds) {
+    const retDate = new Date(this);
+    retDate.setHours(0);
+    retDate.setMinutes(0);
+    retDate.setSeconds(0);
+    retDate.setMilliseconds(millSecconds);
+
+    return retDate;
+}
