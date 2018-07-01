@@ -62,14 +62,19 @@ Date.prototype.getHourDecTimeText = function () {
     const decTime = this.getHourDecTime();
 
     const hour = ('0' + floor(decTime, 0)).slice(-2);
-    const minutes = ('0' + (floor(decTime, -2) * 100)).slice(-2)
+    const minutes = ('0' + (floor(decTime % 1, -2) * 100)).slice(-2)
 
     // 例: 0.30, 1.25
-    return hour + '.' + minutes;
+    return hour + '.' + minutes + 'H';
 };
 
 Date.prototype.createTimeTextDate = function (timeDtlText) {
     const date = new Date(this);
+
+    // 時刻を設定する文字列が不足している場合
+    if (timeDtlText === undefined || timeDtlText.length < 5) {
+        return date;
+    }
 
     date.setHours(parseInt(timeDtlText.slice(0, 2)));
     date.setMinutes(parseInt(timeDtlText.slice(3, 5)));

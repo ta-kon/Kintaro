@@ -2,6 +2,10 @@
     padding-top: 7rem;
 }
 
+table#workTimeTable {
+    width: 100%;
+}
+
 a#github {
     padding: 10px 50px 10px 10px;
     margin-bottom: 1rem;

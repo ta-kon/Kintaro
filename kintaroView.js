@@ -9,13 +9,36 @@ $(document).ready(function () {
 
 function updateProgresAll() {
     const now = new Date();
-    now.setHours(12, now.getSeconds() % 30);
+    // now.setHours(12, now.getSeconds() % 30);
 
+    updateProgresNow(now);
+    updateProgresWork(now);
+};
+
+function updateProgresWork(now) {
+    const endDate = KINTARO_MODEL.WORK.time.limitDate(now).end;
+    const endWorkProgress = progresTime(endDate);
+
+    const end15minDate = new Date(endDate);
+    end15minDate.setMinutes(Math.floor(endDate.getMinutes() / 15) * 15);
+    const end15minWorkProgress = progresTime(end15minDate);
+
+    setWorkTimeText('#workTime-real', endWorkProgress.workProgres.workTime);
+    setWorkTimeText('#workTime-15min', end15minWorkProgress.workProgres.workTime);
+}
+
+function setWorkTimeText(selector, workTime) {
+    const workTimeElement = $(selector);
+    workTimeElement.find('.timeDtl').text(workTime.getTimeDtlText());
+    workTimeElement.find('.decTime').text(workTime.getHourDecTimeText());
+}
+
+function updateProgresNow(now) {
     KINTARO_MODEL.MENU.nowDate.text(now.getTimeDtlText());
 
     const progres = progresTime(now);
     updateProgres(progres);
-};
+}
 
 function initTime() {
     const timeText = new Date().getTimeText();
@@ -70,7 +93,6 @@ function updateProgres(progres) {
     }
 
     setMenuText(progres.workProgres.workTime);
-
     setMenuProgress(progres);
 }
 
@@ -240,7 +262,7 @@ function setMenuText(workTime) {
     const MENU = KINTARO_MODEL.MENU;
 
     MENU.realTime.text(workTime.getTimeDtlText());
-    MENU.realTime_dec.text(workTime.getHourDecTimeText() + 'H');
+    MENU.realTime_dec.text(workTime.getHourDecTimeText());
 }
 
 function makeProgressBar(rate) {
