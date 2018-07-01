@@ -134,14 +134,6 @@ function updateProgress(breakTimeProgress, progresHtml) {
     }
 }
 
-function sanitaize(str) {
-    return str.replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
-
 function getProgressText(breakProgres) {
 
     const result = breakProgres.result;

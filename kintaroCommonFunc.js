@@ -3,7 +3,15 @@ function floor(num, digit) {
     const calcDigit = Math.pow(10, -digit);
     const number = num * calcDigit;
     return Math.floor(number) / calcDigit;
-};
+}
+
+function sanitaize(str) {
+    return str.replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
 
 Date.prototype.getHoursMillSeconds = function () {
     const hours = this.getHours();
