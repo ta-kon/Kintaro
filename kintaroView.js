@@ -32,7 +32,7 @@ function setIntervalUpdateProgres() {
     // 次の1秒までのミリ秒
     const lessMillSecconds = 1000 - new Date().getMilliseconds();
 
-    // ミリ秒単位で時間を合わせるため、起動時は時間を修正
+    // ミリ秒単位で時間を合わせるため、起動契機を修正
     setTimeout(function () {
 
         // １秒後の表示を更新
