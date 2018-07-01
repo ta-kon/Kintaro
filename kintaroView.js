@@ -18,7 +18,7 @@ function updateProgresAll() {
 };
 
 function initTime() {
-    const timeText = new Date().getTimeDtlText();
+    const timeText = new Date().getTimeText();
 
     const WORK = KINTARO_MODEL.WORK;
     WORK.time.end.tag.val(timeText);
@@ -159,7 +159,7 @@ function getProgressText(breakProgres) {
             };
         },
         Halfway: function () {
-            const millSeconds = result.timeList.end.date.removeMillSeconds();
+            const millSeconds = result.timeList.end.date.getHoursMillSeconds();
             const diffTime = (result.diffTime === 0 ? millSeconds : result.diffTime);
             const rate = Math.abs(floor(((millSeconds / diffTime) * 100), -2));
 
@@ -223,7 +223,7 @@ function makeProgressInnerHtml(type, rate) {
 
     return {
         innerHtml: innerHtml,
-        type, type,
+        type: type,
         rate: rate
     };
 }

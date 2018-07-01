@@ -1,21 +1,5 @@
 ﻿"use strict";
 
-function getTimeDtlText(date) {
-    return date.getTimeDtlText();
-}
-
-function removeMillSec(date) {
-    return floor((date.getTime() / 1000), 0) * 1000;
-}
-
-function subDate(currentDate, limitDate) {
-
-    const diffMillSecconds = Math.abs(removeMillSec(currentDate) - removeMillSec(limitDate));
-    const subTime = currentDate.createHoursMillSecconds(diffMillSecconds);
-
-    return { time: subTime, isBefore: (currentDate < limitDate) };
-}
-
 function isTime(timeList) {
 
     const Before = timeList.start.isBefore;
@@ -55,7 +39,7 @@ function makeResult(currentDate, limitDate) {
     let timeList = {};
 
     for (let i in limitDate) {
-        const sub = subDate(currentDate, limitDate[i]);
+        const sub = currentDate.subDate(limitDate[i]);
 
         const result = {
             date: sub.time,
@@ -119,7 +103,7 @@ function SumBreakTime() {
                 afterTime += diffTime;
             },
             Halfway: function () {
-                halfwayTime += result.timeList.start.date.removeMillSeconds();
+                halfwayTime += result.timeList.start.date.getHoursMillSeconds();
             }
         }
 

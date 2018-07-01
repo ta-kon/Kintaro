@@ -1,4 +1,11 @@
-Date.prototype.removeMillSeconds = function () {
+
+function floor(num, digit) {
+    const calcDigit = Math.pow(10, -digit);
+    const number = num * calcDigit;
+    return Math.floor(number) / calcDigit;
+};
+
+Date.prototype.getHoursMillSeconds = function () {
     const hours = this.getHours();
     const minutes = (hours * 60) + this.getMinutes();
     const seconds = (minutes * 60) + this.getSeconds();
@@ -7,11 +14,8 @@ Date.prototype.removeMillSeconds = function () {
     return millSecconds;
 };
 
-Date.prototype.toJSON = function () {
-    const date = this.getFullYear() + '-' + ('0' + (this.getMonth() + 1)).slice(-2) + '-' + ('0' + this.getDate()).slice(-2) + 'T ';
-    const time = this.getTimeDtlText() + 'Z';
-
-    return date + time;
+Date.prototype.getRemoveMillSeconds = function () {
+    return Math.floor(this.getTime() / 1000) * 1000;
 };
 
 Date.prototype.getTimeDtlText = function () {
@@ -25,6 +29,18 @@ Date.prototype.getTimeDtlText = function () {
     const seconds = fillZero2(this.getSeconds());
 
     return hours + ":" + minutes + ":" + seconds;
+};
+
+Date.prototype.getTimeText = function () {
+
+    function fillZero2(num) {
+        return ('0' + num).slice(-2);
+    }
+
+    const hours = fillZero2(this.getHours());
+    const minutes = fillZero2(this.getMinutes());
+
+    return hours + ":" + minutes;
 };
 
 Date.prototype.getHourDecTime = function () {
@@ -60,12 +76,25 @@ Date.prototype.createTimeTextDate = function (timeDtlText) {
     return date;
 };
 
-Date.prototype.createHoursMillSecconds = function(millSecconds) {
+Date.prototype.createHoursMillSecconds = function (millSecconds) {
     const retDate = new Date(this);
-    retDate.setHours(0);
-    retDate.setMinutes(0);
-    retDate.setSeconds(0);
+    retDate.setHours(0, 0, 0);
     retDate.setMilliseconds(millSecconds);
 
     return retDate;
-}
+};
+
+Date.prototype.subDate = function (limitDate) {
+
+    const diffMillSecconds = Math.abs(this.getRemoveMillSeconds() - limitDate.getRemoveMillSeconds());
+    const subTime = this.createHoursMillSecconds(diffMillSecconds);
+
+    return { time: subTime, isBefore: (this < limitDate) };
+};
+
+Date.prototype.toJSON = function () {
+    const date = this.getFullYear() + '-' + ('0' + (this.getMonth() + 1)).slice(-2) + '-' + ('0' + this.getDate()).slice(-2) + 'T ';
+    const time = this.getTimeDtlText() + 'Z';
+
+    return date + time;
+};

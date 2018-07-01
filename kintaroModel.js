@@ -88,9 +88,3 @@ const Format = {
         }
     },
 };
-
-function floor(num, digit) {
-    const calcDigit = Math.pow(10, -digit);
-    const number = num * calcDigit;
-    return Math.floor(number) / calcDigit;
-}
