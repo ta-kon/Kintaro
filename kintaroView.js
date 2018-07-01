@@ -98,7 +98,7 @@ function updateProgress(breakTimeProgress, progresHtml) {
         }
 
         if (!existProgressElement) {
-            breakTimeProgress.append(progresHtml.progres.innerHtml);
+            breakTimeProgress.append(progresHtml.progres.outerHTML);
 
             return;
         }
@@ -213,16 +213,18 @@ function makeProgressBar(rate) {
 
 function makeProgressInnerHtml(type, rate) {
 
-    let innerHtml = '';
-    innerHtml += '<div class="progress">'
-    innerHtml += '<div class="progress-bar progress-bar-striped ';
-    innerHtml += sanitaize(type);
-    innerHtml += ' progress-bar-animated" role = "progressbar" ';
-    innerHtml += 'style = "width: ' + Number(rate) + '%" >';
-    innerHtml += '</div ></div >';
+    const progress = document.createElement('div');
+    progress.className = 'progress';
+
+    const progressBar = document.createElement('div');
+    progress.appendChild(progressBar);
+
+    progressBar.className = 'progress-bar progress-bar-striped progress-bar-animated ' + sanitaize(type);
+    progressBar.setAttribute('role', 'progressbar');
+    progressBar.setAttribute('style', 'width: ' + Number(rate) + ' %;');
 
     return {
-        innerHtml: innerHtml,
+        outerHTML: progress.outerHTML,
         type: type,
         rate: rate
     };
