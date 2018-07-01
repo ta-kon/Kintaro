@@ -1,4 +1,3 @@
-
 function floor(num, digit) {
     const calcDigit = Math.pow(10, -digit);
     const number = num * calcDigit;
@@ -61,8 +60,14 @@ Date.prototype.getHourDecTime = function () {
 Date.prototype.getHourDecTimeText = function () {
     const decTime = this.getHourDecTime();
 
-    const hour = ('0' + floor(decTime, 0)).slice(-2);
-    const minutes = ('0' + (floor(decTime % 1, -2) * 100)).slice(-2)
+    const hour = ('0' + Math.floor(decTime)).slice(-2);
+
+    function getMinutesText() {
+        // 0.5 50,  0.583 58.3,  0.0583 5.83
+        return new Decimal(decTime).mod(1).times(100).toNumber();
+    }
+
+    const minutes = ('0' + Math.floor(getMinutesText())).slice(-2);
 
     // 例: 0.30, 1.25
     return hour + '.' + minutes + 'H';

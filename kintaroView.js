@@ -98,28 +98,35 @@ function updateProgres(progres) {
     }
 
     setMenuText(progres.workProgres.workTime);
-    setMenuProgress(progres);
+    const nowProgress = getNowBreakTimeProgres(progres);
+    setMenuProgress(nowProgress);
+    setDocumentTitle(nowProgress);
 }
 
-function setMenuProgress(progres) {
-    const nowProgress = getNowBreakTimeProgres(progres);
+function setDocumentTitle(nowProgress) {
+    const title = '勤太郎 | ' + nowProgress.break_name + ' | ' + getProgressDtlText(nowProgress);
+    document.title = title;
+}
+
+function getProgressDtlText(nowProgress) {
+
+    const timeDtlText = (function lessTime() {
+        // 残り表示時間を算出
+        const result = nowProgress.result;
+
+        if (result.Less.is === 'Before') {
+            return result.timeList.start.timeDtlText;
+        }
+
+        return result.timeList.end.timeDtlText;
+    })();
+
+    return getLessTimeIsText(nowProgress.result.Less.is) + ' ' + timeDtlText;
+}
+
+function setMenuProgress(nowProgress) {
     $('#menu-progress-title').text(nowProgress.break_name);
-
-    const progresText =
-        getLessTimeIsText(nowProgress.result.Less.is)
-        + ' '
-        + (function lessTime() {
-            // 残り表示時間を算出
-            const result = nowProgress.result;
-
-            if (result.Less.is === 'Before') {
-                return result.timeList.start.timeDtlText;
-            }
-
-            return result.timeList.end.timeDtlText;
-        })();
-
-    $('#menu-progress').text(progresText);
+    $('#menu-progress').text(getProgressDtlText(nowProgress));
 }
 
 function getNowBreakTimeProgres(progres) {
@@ -285,7 +292,7 @@ function makeProgressBar(rate) {
             return (progressType.length - 1);
         }
 
-        const rateTypeSize = (100 / progressType.length);
+        const rateTypeSize = Math.floor(100 / progressType.length);
         return Math.floor(rate / rateTypeSize);
     })();
 
