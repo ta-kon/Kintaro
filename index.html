@@ -38,25 +38,25 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     現在時間
-                    <span class="nav-link" id="menu-nowDate">Not Runnning javascript</span>
+                    <span class="nav-link" id="menu-nowDate">00:00:00</span>
                 </li>
             </ul>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     作業時間
-                    <span class="nav-link" id="menu-realTime">Not Runnning javascript</span>
+                    <span class="nav-link" id="menu-realTime">00:00:00</span>
                 </li>
             </ul>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     作業時間 (10進表記)
-                    <span class="nav-link" id="menu-realTime-dec">Not Runnning javascript</span>
+                    <span class="nav-link" id="menu-realTime-dec">00.00H</span>
                 </li>
             </ul>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <span id="menu-progress-title">Not Runnning javascript</span>
-                    <span class="nav-link" id="menu-progress">Not Runnning javascript</span>
+                    <span id="menu-progress-title">休憩名称</span>
+                    <span class="nav-link" id="menu-progress">あと 00:00:00</span>
                 </li>
             </ul>
         </div>
@@ -83,18 +83,16 @@
                         <input type="text" class="btn btn-secondary input-time" value="18:00" id="workTime-end">
                     </td>
                     <td id="workTime">
-                        <table id="workTimeTable">
-                            <tr id="workTime-15min">
-                                <th>15分単位</th>
-                                <td class="timeDtl"></td>
-                                <td class="decTime"></td>
-                            </tr>
-                            <tr id="workTime-real">
-                                <th>1分単位</th>
-                                <td class="timeDtl"></td>
-                                <td class="decTime"></td>
-                            </tr>
-                        </table>
+                        <dl>
+                            <span id="workTime-15min">
+                                <dt>15分単位</dt>
+                                <dd class="decTime">Not Runnning javascript</dd>
+                            </span>
+                            <span id="workTime-real">
+                                <dt>1分単位</dt>
+                                <dd class="decTime">Not Runnning javascript</dd>
+                            </span>
+                        </dl>
                     </td>
                 </tr>
             </tbody>

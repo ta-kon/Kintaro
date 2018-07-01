@@ -1,15 +1,21 @@
 "use strict";
 
 $(document).ready(function () {
+    marginTopBody();
+
     initTime();
     initBootstrapMaterialDatePicker();
 
     setIntervalUpdateProgres();
 });
 
+function marginTopBody() {
+    const navbar = document.querySelector('div.navbar');
+    document.body.style.paddingTop = (navbar.offsetHeight * 1.3) + 'px';
+}
+
 function updateProgresAll() {
     const now = new Date();
-    // now.setHours(12, now.getSeconds() % 30);
 
     updateProgresNow(now);
     updateProgresWork(now);
@@ -29,7 +35,6 @@ function updateProgresWork(now) {
 
 function setWorkTimeText(selector, workTime) {
     const workTimeElement = $(selector);
-    workTimeElement.find('.timeDtl').text(workTime.getTimeDtlText());
     workTimeElement.find('.decTime').text(workTime.getHourDecTimeText());
 }
 
@@ -211,7 +216,7 @@ function getProgressText(breakProgres) {
 
     const result = breakProgres.result;
 
-    if (isNaN(result.diffTime)) {
+    if (isNaN(result.diffTime) || result.diffTime === 0) {
         return undefined;
     }
 
