@@ -69,10 +69,42 @@ function updateProgres(progres) {
         updateProgress(breakTime.progres, progresHtml);
     }
 
-    const workTime = progres.workProgres.workTime;
-    setMenuText(workTime);
+    setMenuText(progres.workProgres.workTime);
 
-    $('#debug').text(JSON.stringify(progres.workProgres));
+    const nowProgress = getNowBreakTimeProgres(progres);
+    $('#menu-progress-title').text(nowProgress.break_name);
+    // end or start で調整が必要
+    $('#menu-progress').text(getLessTimeIsText(nowProgress.result.Less.is) + nowProgress.result.timeList.end.timeDtlText);
+}
+
+function getNowBreakTimeProgres(progres) {
+    const breakProgres = progres.breakProgres;
+
+    let lowDiffTimeAfterResult = undefined;
+    let lowDiffTimeBeforeResult = undefined;
+
+    for (let breakTime in breakProgres) {
+        const breakTimeResult = breakProgres[breakTime];
+
+        switch (breakTimeResult.result.Less.is) {
+            case 'Halfway':
+                return breakTimeResult;
+            case 'After':
+                if (lowDiffTimeAfterResult === undefined || breakTimeResult.result.diffTime < lowDiffTimeAfterResult.result.diffTime) {
+                    lowDiffTimeAfterResult = breakTimeResult;
+                }
+                break;
+            case 'Before':
+                if (lowDiffTimeBeforeResult === undefined || breakTimeResult.result.diffTime < lowDiffTimeBeforeResult.result.diffTime) {
+                    lowDiffTimeBeforeResult = breakTimeResult;
+                }
+                break;
+            default:
+                throw new Error('time Is Error ' + JSON.stringify(progres));
+        }
+    }
+
+    return (lowDiffTimeBeforeResult !== undefined ? lowDiffTimeBeforeResult : lowDiffTimeAfterResult);
 }
 
 function updateProgress(breakTimeProgress, progresHtml) {
@@ -82,6 +114,7 @@ function updateProgress(breakTimeProgress, progresHtml) {
         progressTime();
         progressBar();
 
+        // 特に戻り値の指定なし
         return undefined;
     })();
 
@@ -146,7 +179,6 @@ function getProgressText(breakProgres) {
         Before: function () {
             return {
                 bageClass: 'badge badge-dark',
-                text: "あと",
                 time: result.timeList.start.timeDtlText,
             };
         },
@@ -157,7 +189,6 @@ function getProgressText(breakProgres) {
 
             return {
                 bageClass: 'badge badge-dark',
-                text: "残り",
                 time: result.timeList.end.timeDtlText,
                 progres: makeProgressBar(rate),
             };
@@ -165,13 +196,26 @@ function getProgressText(breakProgres) {
         After: function () {
             return {
                 bageClass: 'badge badge-pill badge-dark',
-                text: "経過",
                 time: result.timeList.end.timeDtlText,
             };
         }
     };
 
-    return view[result.Less.is]();
+    let progressText = view[result.Less.is]();
+    progressText.text = getLessTimeIsText(result.Less.is);
+
+    return progressText;
+}
+
+function getLessTimeIsText(lessTimeIs) {
+
+    const timeText = {
+        Before: "あと",
+        Halfway: "残り",
+        After: "経過"
+    };
+
+    return timeText[lessTimeIs];
 }
 
 function setMenuText(workTime) {
