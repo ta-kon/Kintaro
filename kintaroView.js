@@ -44,7 +44,7 @@ function setIntervalUpdateProgres() {
 }
 
 function initBootstrapMaterialDatePicker() {
-    const inputTime = $('body').find('.input-time');
+    const inputTime = $('.input-time');
 
     inputTime.bootstrapMaterialDatePicker({
         date: false,

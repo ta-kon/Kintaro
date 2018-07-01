@@ -48,7 +48,7 @@ function BreakTime(timeName) {
             start: start.timeTextDate(now),
             end: end.timeTextDate(now)
         };
-    };
+    }
 
     function timeObj(selector) {
         const timeSelector = $(selector);
