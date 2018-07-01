@@ -9,7 +9,7 @@ $(document).ready(function () {
 
 function updateProgresAll() {
     const now = new Date();
-    now.setHours(12);
+    now.setHours(12, now.getSeconds() % 30);
 
     KINTARO_MODEL.MENU.nowDate.text(now.getTimeDtlText());
 
@@ -71,10 +71,28 @@ function updateProgres(progres) {
 
     setMenuText(progres.workProgres.workTime);
 
+    setMenuProgress(progres);
+}
+
+function setMenuProgress(progres) {
     const nowProgress = getNowBreakTimeProgres(progres);
     $('#menu-progress-title').text(nowProgress.break_name);
-    // end or start で調整が必要
-    $('#menu-progress').text(getLessTimeIsText(nowProgress.result.Less.is) + nowProgress.result.timeList.end.timeDtlText);
+
+    const progresText =
+        getLessTimeIsText(nowProgress.result.Less.is)
+        + ' '
+        + (function lessTime() {
+            // 残り表示時間を算出
+            const result = nowProgress.result;
+
+            if (result.Less.is === 'Before') {
+                return result.timeList.start.timeDtlText;
+            }
+
+            return result.timeList.end.timeDtlText;
+        })();
+
+    $('#menu-progress').text(progresText);
 }
 
 function getNowBreakTimeProgres(progres) {
@@ -90,12 +108,12 @@ function getNowBreakTimeProgres(progres) {
             case 'Halfway':
                 return breakTimeResult;
             case 'After':
-                if (lowDiffTimeAfterResult === undefined || breakTimeResult.result.diffTime < lowDiffTimeAfterResult.result.diffTime) {
+                if (lowDiffTimeAfterResult === undefined || breakTimeResult.result.timeList.end.date < lowDiffTimeAfterResult.result.timeList.end.date) {
                     lowDiffTimeAfterResult = breakTimeResult;
                 }
                 break;
             case 'Before':
-                if (lowDiffTimeBeforeResult === undefined || breakTimeResult.result.diffTime < lowDiffTimeBeforeResult.result.diffTime) {
+                if (lowDiffTimeBeforeResult === undefined || breakTimeResult.result.timeList.start.date < lowDiffTimeBeforeResult.result.timeList.start.date) {
                     lowDiffTimeBeforeResult = breakTimeResult;
                 }
                 break;
