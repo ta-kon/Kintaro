@@ -1,3 +1,7 @@
+function fillZero2(num) {
+    return ('0' + parseInt(num)).slice(-2);
+}
+
 function floor(num, digit) {
     const calcDigit = Math.pow(10, -digit);
     const number = num * calcDigit;
@@ -27,10 +31,6 @@ Date.prototype.getRemoveMillSeconds = function () {
 
 Date.prototype.getTimeDtlText = function () {
 
-    function fillZero2(num) {
-        return ('0' + num).slice(-2);
-    }
-
     const hours = fillZero2(this.getHours());
     const minutes = fillZero2(this.getMinutes());
     const seconds = fillZero2(this.getSeconds());
@@ -39,10 +39,6 @@ Date.prototype.getTimeDtlText = function () {
 };
 
 Date.prototype.getTimeText = function () {
-
-    function fillZero2(num) {
-        return ('0' + num).slice(-2);
-    }
 
     const hours = fillZero2(this.getHours());
     const minutes = fillZero2(this.getMinutes());
@@ -60,14 +56,14 @@ Date.prototype.getHourDecTime = function () {
 Date.prototype.getHourDecTimeText = function () {
     const decTime = this.getHourDecTime();
 
-    const hour = ('0' + Math.floor(decTime)).slice(-2);
+    const hour = fillZero2(Math.floor(decTime));
 
     function getMinutesText() {
         // 0.5 50,  0.583 58.3,  0.0583 5.83
         return new Decimal(decTime).mod(1).times(100).toNumber();
     }
 
-    const minutes = ('0' + Math.floor(getMinutesText())).slice(-2);
+    const minutes = fillZero2(Math.floor(getMinutesText()));
 
     // 例: 0.30, 1.25
     return hour + '.' + minutes + 'H';
@@ -91,6 +87,8 @@ Date.prototype.createTimeTextDate = function (timeDtlText) {
         date.setSeconds(0);
     }
 
+    date.setMilliseconds(0);
+
     return date;
 };
 
@@ -111,7 +109,7 @@ Date.prototype.subDate = function (limitDate) {
 };
 
 Date.prototype.toJSON = function () {
-    const date = this.getFullYear() + '-' + ('0' + (this.getMonth() + 1)).slice(-2) + '-' + ('0' + this.getDate()).slice(-2) + 'T ';
+    const date = this.getFullYear() + '-' + fillZero2((this.getMonth() + 1)) + '-' + fillZero2(this.getDate()) + 'T ';
     const time = this.getTimeDtlText() + 'Z';
 
     return date + time;

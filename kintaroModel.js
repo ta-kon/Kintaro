@@ -16,22 +16,24 @@ function MENU() {
 
 function WORK() {
     return {
-        time: BreakTime('#workTime'),
+        time: BreakTime({ timeName: '#workTime' }),
     };
 }
 
 function BREAK_TIME() {
     return {
-        noon: BreakTime('#breakTime1'),
-        evening: BreakTime('#breakTime2'),
-        night: BreakTime('#breakTime3'),
-        midnight: BreakTime('#breakTime4'),
-        other1: BreakTime('#breakTime-other1'),
-        other2: BreakTime('#breakTime-other2'),
+        noon: BreakTime({ timeName: '#breakTime1', containAddWorkTime: false }),
+        evening: BreakTime({ timeName: '#breakTime2', containAddWorkTime: false }),
+        night: BreakTime({ timeName: '#breakTime3', containAddWorkTime: true }),
+        midnight: BreakTime({ timeName: '#breakTime4', containAddWorkTime: true }),
+        other1: BreakTime({ timeName: '#breakTime-other1', containAddWorkTime: false }),
+        other2: BreakTime({ timeName: '#breakTime-other2', containAddWorkTime: false }),
     };
 }
 
-function BreakTime(timeName) {
+function BreakTime(breakTimeSetting) {
+    const timeName = breakTimeSetting.timeName;
+
     const start = timeObj(timeName + '-start');
     const end = timeObj(timeName + '-end');
 
@@ -40,7 +42,8 @@ function BreakTime(timeName) {
         start: start,
         end: end,
         limitDate: limitDate,
-        progres: $(timeName)
+        progres: $(timeName),
+        setting: breakTimeSetting,
     };
 
     function limitDate(now) {
@@ -58,7 +61,6 @@ function BreakTime(timeName) {
             timeTextDate: function (now) {
 
                 const date = now.createTimeTextDate(timeSelector.val());
-                const workTime = KINTARO_MODEL.WORK.time;
 
                 if (selector === '#workTime-start' || selector === '#workTime-end') {
                     return date;
@@ -77,14 +79,3 @@ function BreakTime(timeName) {
         };
     }
 }
-
-const Format = {
-    Fill: {
-        Zero2: function (num) {
-            return ('0' + Number(num)).slice(-2);
-        },
-        Zero3: function (num) {
-            return ('00' + Number(num)).slice(-3);
-        }
-    },
-};

@@ -138,6 +138,10 @@ function getNowBreakTimeProgres(progres) {
     for (let breakTime in breakProgres) {
         const breakTimeResult = breakProgres[breakTime];
 
+        if (breakTimeResult.result.diffTime === 0) {
+            continue;
+        }
+
         switch (breakTimeResult.result.Less.is) {
             case 'Halfway':
                 return breakTimeResult;

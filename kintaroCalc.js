@@ -57,13 +57,13 @@ function makeResult(currentDate, limitDate) {
     };
 }
 
-function progressBreakTime(currentDate, time) {
+function progressBreakTime(currentDate, breakTime) {
     const now = currentDate;
 
-    const limitDate = time.limitDate(now);
+    const limitDate = breakTime.limitDate(now);
 
     return {
-        break_name: time.name,
+        break_name: breakTime.name,
         result: makeResult(now, limitDate)
     };
 }
@@ -91,10 +91,10 @@ function SumBreakTime() {
         };
     }
 
-    function addDiffTime(result) {
+    function addDiffTime(containAddWorkTime, result) {
         const diffTime = result.diffTime;
         if (isNaN(diffTime)) {
-            return false;
+            throw new Error("休憩時間に数値でないものが挿入されています。");
         }
 
         const addDiffTime = {
@@ -103,6 +103,11 @@ function SumBreakTime() {
                 afterTime += diffTime;
             },
             Halfway: function () {
+
+                // 勤怠時間に含める時間の場合
+                if (containAddWorkTime === true) {
+                    return;
+                }
                 halfwayTime += result.timeList.start.date.getHoursMillSeconds();
             }
         }
@@ -123,7 +128,8 @@ function progresTime(currentDate) {
         const breakTime = BREAK_TIME[break_name];
 
         const progres = progressBreakTime(currentDate, breakTime);
-        sum.addDiffTime(progres.result);
+
+        sum.addDiffTime(breakTime.setting.containAddWorkTime, progres.result);
 
         breakProgres[break_name] = progres;
     }
