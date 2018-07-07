@@ -6,12 +6,15 @@ table#workTimeTable {
     width: 100%;
 }
 
-a#github {
+button#notifyBtn, a#github {
     padding: 10px 50px 10px 10px;
     margin-bottom: 1rem;
     border-radius: 4px;
-    float: right;
     color: #fff;
+}
+
+a#github {
+    float: right;
     background: url(https://pages-themes.github.io/slate/assets/images/blacktocat.png) #0090ff no-repeat 95% 50%;
 }
 
