@@ -1,3 +1,6 @@
+// IE11の場合は、プッシュ通知が行えず、push.jsで通知可能判定となってしまうため、修正する。
+const isIE = (window.navigator.userAgent.indexOf('Trident') !== -1);
+
 function fillZero2(num) {
     return ('0' + parseInt(num)).slice(-2);
 }
@@ -105,7 +108,7 @@ Date.prototype.subDate = function (limitDate) {
     const diffMillSecconds = Math.abs(this.getRemoveMillSeconds() - limitDate.getRemoveMillSeconds());
     const subTime = this.createHoursMillSecconds(diffMillSecconds);
 
-    return { time: subTime, isBefore: (this < limitDate) };
+    return { time: subTime, diffMillSecconds: diffMillSecconds, isBefore: (this < limitDate) };
 };
 
 Date.prototype.toJSON = function () {
