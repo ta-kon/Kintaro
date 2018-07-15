@@ -1,13 +1,12 @@
-﻿"use strict";
+﻿'use strict';
 
 function isTime(timeList) {
-
     const Before = timeList.start.isBefore;
     const After = !timeList.end.isBefore;
 
     const Halfway = (!Before && !After);
 
-    return { Before: Before, Halfway: Halfway, After: After }
+    return { Before: Before, Halfway: Halfway, After: After };
 }
 
 function isTimeResult(timeList) {
@@ -25,7 +24,7 @@ function LessTime(timeList) {
         Before: timeList.start.date,
         Halfway: timeList.end.date,
         After: timeList.end.date
-    }
+    };
 
     const result = isTimeResult(timeList);
 
@@ -51,7 +50,7 @@ function makeResult(currentDate, limitDate) {
     }
 
     return {
-        Less: LessTime(timeList),
+        Less: new LessTime(timeList),
         diffTime: (limitDate.end - limitDate.start),
         timeList: timeList
     };
@@ -94,7 +93,7 @@ function SumBreakTime() {
     function addDiffTime(containAddWorkTime, result) {
         const diffTime = result.diffTime;
         if (isNaN(diffTime)) {
-            throw new Error("休憩時間に数値でないものが挿入されています。");
+            throw new Error('休憩時間に数値でないものが挿入されています。');
         }
 
         const addDiffTime = {
@@ -103,14 +102,13 @@ function SumBreakTime() {
                 afterTime += diffTime;
             },
             Halfway: function () {
-
                 // 勤怠時間に含める時間の場合
                 if (containAddWorkTime === true) {
                     return;
                 }
                 halfwayTime += result.timeList.start.date.getHoursMillSeconds();
             }
-        }
+        };
 
         addDiffTime[result.Less.is]();
 
@@ -119,19 +117,18 @@ function SumBreakTime() {
 }
 
 function progresTime(currentDate) {
-
     const BREAK_TIME = KINTARO_MODEL.BREAK_TIME;
-    const sum = SumBreakTime();
+    const sum = new SumBreakTime();
 
     let breakProgres = {};
-    for (let break_name in BREAK_TIME) {
-        const breakTime = BREAK_TIME[break_name];
+    for (let breakName in BREAK_TIME) {
+        const breakTime = BREAK_TIME[breakName];
 
         const progres = progressBreakTime(currentDate, breakTime);
 
         sum.addDiffTime(breakTime.setting.containAddWorkTime, progres.result);
 
-        breakProgres[break_name] = progres;
+        breakProgres[breakName] = progres;
     }
 
     const WORK = KINTARO_MODEL.WORK;

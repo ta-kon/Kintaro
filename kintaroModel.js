@@ -1,33 +1,33 @@
-﻿"use strict";
+﻿'use strict';
 
 const KINTARO_MODEL = {
-    MENU: MENU(),
-    WORK: WORK(),
-    BREAK_TIME: BREAK_TIME()
+    MENU: new MENU(),
+    WORK: new WORK(),
+    BREAK_TIME: new BREAK_TIME(),
 };
 
 function MENU() {
     return {
         nowDate: $('#menu-nowDate'),
         realTime: $('#menu-realTime'),
-        realTime_dec: $('#menu-realTime-dec')
+        realTime_dec: $('#menu-realTime-dec'),
     };
 }
 
 function WORK() {
     return {
-        time: BreakTime({ timeName: '#workTime' }),
+        time: new BreakTime({ timeName: '#workTime' }),
     };
 }
 
 function BREAK_TIME() {
     return {
-        noon: BreakTime({ timeName: '#breakTime1', containAddWorkTime: false }),
-        evening: BreakTime({ timeName: '#breakTime2', containAddWorkTime: false }),
-        night: BreakTime({ timeName: '#breakTime3', containAddWorkTime: true }),
-        midnight: BreakTime({ timeName: '#breakTime4', containAddWorkTime: true }),
-        other1: BreakTime({ timeName: '#breakTime-other1', containAddWorkTime: false }),
-        other2: BreakTime({ timeName: '#breakTime-other2', containAddWorkTime: false }),
+        noon: new BreakTime({ timeName: '#breakTime1', containAddWorkTime: false }),
+        evening: new BreakTime({ timeName: '#breakTime2', containAddWorkTime: false }),
+        night: new BreakTime({ timeName: '#breakTime3', containAddWorkTime: true }),
+        midnight: new BreakTime({ timeName: '#breakTime4', containAddWorkTime: true }),
+        other1: new BreakTime({ timeName: '#breakTime-other1', containAddWorkTime: false }),
+        other2: new BreakTime({ timeName: '#breakTime-other2', containAddWorkTime: false }),
     };
 }
 
@@ -59,7 +59,6 @@ function BreakTime(breakTimeSetting) {
         return {
             tag: timeSelector,
             timeTextDate: function (now) {
-
                 const date = now.createTimeTextDate(timeSelector.val());
 
                 if (selector === '#workTime-start' || selector === '#workTime-end') {
