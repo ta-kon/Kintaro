@@ -5,12 +5,6 @@ function fillZero2(num) {
     return ('0' + parseInt(num)).slice(-2);
 }
 
-function floor(num, digit) {
-    const calcDigit = Math.pow(10, -digit);
-    const number = num * calcDigit;
-    return Math.floor(number) / calcDigit;
-}
-
 function sanitaize(str) {
     return str.replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -33,20 +27,18 @@ Date.prototype.getRemoveMillSeconds = function () {
 };
 
 Date.prototype.getTimeDtlText = function () {
-
     const hours = fillZero2(this.getHours());
     const minutes = fillZero2(this.getMinutes());
     const seconds = fillZero2(this.getSeconds());
 
-    return hours + ":" + minutes + ":" + seconds;
+    return hours + ':' + minutes + ':' + seconds;
 };
 
 Date.prototype.getTimeText = function () {
-
     const hours = fillZero2(this.getHours());
     const minutes = fillZero2(this.getMinutes());
 
-    return hours + ":" + minutes;
+    return hours + ':' + minutes;
 };
 
 Date.prototype.getHourDecTime = function () {
@@ -104,7 +96,6 @@ Date.prototype.createHoursMillSecconds = function (millSecconds) {
 };
 
 Date.prototype.subDate = function (limitDate) {
-
     const diffMillSecconds = Math.abs(this.getRemoveMillSeconds() - limitDate.getRemoveMillSeconds());
     const subTime = this.createHoursMillSecconds(diffMillSecconds);
 

@@ -8,7 +8,7 @@ window.addEventListener('load', function () {
 });
 
 function removeNotifyBtn() {
-    const notifyBtn = document.getElementById('notifyBtn')
+    const notifyBtn = document.getElementById('notifyBtn');
     notifyBtn.parentNode.removeChild(notifyBtn);
 }
 
@@ -48,12 +48,11 @@ function existsNotify() {
 }
 
 function notify(message) {
-
     // messageのデフォルト値の設定
     message = message || {};
     message.title = message.title || 'Kintaro';
     message.body = message.body || 'Kintaro';
-    message.timeoutSeconds = message.timeoutSeconds || 10;  // Seconds
+    message.timeoutSeconds = message.timeoutSeconds || 10; // Seconds
 
     // プッシュ通知を送る
     Push.create(message.title, {

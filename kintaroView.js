@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // ページ表示時に実行
 window.addEventListener('load', function () {
@@ -59,13 +59,11 @@ function initTime() {
 }
 
 function setIntervalUpdateProgres() {
-
     // 次の1秒までのミリ秒
     const lessMillSecconds = 1000 - new Date().getMilliseconds();
 
     // ミリ秒単位で時間を合わせるため、起動契機を修正
     setTimeout(function () {
-
         // １秒後の表示を更新
         updateProgresAll();
 
@@ -91,9 +89,9 @@ function initBootstrapMaterialDatePicker() {
 function updateProgres(progres) {
     const BREAK_TIME = KINTARO_MODEL.BREAK_TIME;
 
-    for (let break_name in BREAK_TIME) {
-        const breakTime = BREAK_TIME[break_name];
-        const breakProgres = progres.breakProgres[break_name];
+    for (let breakName in BREAK_TIME) {
+        const breakTime = BREAK_TIME[breakName];
+        const breakProgres = progres.breakProgres[breakName];
 
         const progresHtml = getProgressText(breakProgres);
 
@@ -170,7 +168,6 @@ function setDocumentTitle(nowProgress) {
 }
 
 function getProgressDtlText(nowProgress) {
-
     const timeDtlText = (function lessTime() {
         // 残り表示時間を算出
         const result = nowProgress.result;
@@ -225,7 +222,6 @@ function getNowBreakTimeProgres(progres) {
 }
 
 function updateProgress(breakTimeProgress, progresHtml) {
-
     return (function main() {
         progressText();
         progressTime();
@@ -240,7 +236,6 @@ function updateProgress(breakTimeProgress, progresHtml) {
         const existProgressElement = (progressElement[0] !== undefined);
 
         if (progresHtml === undefined || progresHtml.progres === undefined) {
-
             if (existProgressElement) {
                 progressElement.remove();
             }
@@ -271,7 +266,7 @@ function updateProgress(breakTimeProgress, progresHtml) {
 
     function progressText() {
         const progressText = breakTimeProgress.find('*[name="progress-text"]');
-        // 経過　残り　あと [経過: 05:14:36]
+        // 経過 残り あと [経過: 05:14:36]
         progressText.removeClass();
 
         if (progresHtml === undefined) {
@@ -285,7 +280,6 @@ function updateProgress(breakTimeProgress, progresHtml) {
 }
 
 function getProgressText(breakProgres) {
-
     const result = breakProgres.result;
 
     if (isNaN(result.diffTime) || result.diffTime === 0) {
@@ -325,11 +319,10 @@ function getProgressText(breakProgres) {
 }
 
 function getLessTimeIsText(lessTimeIs) {
-
     const timeText = {
-        Before: "あと",
-        Halfway: "残り",
-        After: "経過"
+        Before: 'あと',
+        Halfway: '残り',
+        After: '経過'
     };
 
     return timeText[lessTimeIs];
@@ -361,11 +354,10 @@ function makeProgressBar(rate) {
         return Math.floor(rate / rateTypeSize);
     })();
 
-    return makeProgressInnerHtml(progressType[rateType], rate);
+    return makeProgressHtmlOpt(progressType[rateType], rate);
 }
 
-function makeProgressInnerHtml(type, rate) {
-
+function makeProgressHtmlOpt(type, rate) {
     const progress = document.createElement('div');
     progress.className = 'progress';
 
