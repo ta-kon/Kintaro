@@ -9,6 +9,13 @@
             "request": "launch",
             "name": "index.htmlをChromeで起動",
             "file": "${workspaceFolder}/index.html"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "index.htmlをlocalhostで起動",
+            "webRoot": "${workspaceFolder}",
+            "url": "https://localhost:8443/HttpsLocalExample/Kintaro/",
         }
     ]
 }

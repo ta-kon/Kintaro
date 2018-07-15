@@ -22,9 +22,9 @@ function isTimeResult(timeList) {
 
 function LessTime(timeList) {
     const returnTime = {
-        Before: timeList.start.time,
-        Halfway: timeList.end.time,
-        After: timeList.end.time
+        Before: timeList.start.date,
+        Halfway: timeList.end.date,
+        After: timeList.end.date
     }
 
     const result = isTimeResult(timeList);

@@ -1,6 +1,7 @@
 "use strict";
 
-$(document).ready(function () {
+// ページ表示時に実行
+window.addEventListener('load', function () {
     marginTopBody();
 
     initTime();
@@ -16,7 +17,9 @@ function marginTopBody() {
 
 function updateProgresAll() {
     const now = new Date();
+    now.setMilliseconds(0);
 
+    setNotifyProgress(now);
     updateProgresNow(now);
     updateProgresWork(now);
 };
@@ -98,9 +101,67 @@ function updateProgres(progres) {
     }
 
     setMenuText(progres.workProgres.workTime);
+
     const nowProgress = getNowBreakTimeProgres(progres);
     setMenuProgress(nowProgress);
     setDocumentTitle(nowProgress);
+}
+
+function setNotifyProgress(now) {
+    if (!Push.Permission.has()) {
+        return false;
+    }
+
+    if (isIE) {
+        return false;
+    }
+
+    const nowBreakTimeObj = getNowBreakTimeObj(now);
+    if (nowBreakTimeObj === undefined) {
+        return false;
+    }
+
+    const body = (function () {
+        const limitDate = nowBreakTimeObj.limitDate(now);
+        return limitDate.start.getTimeText() + ' - ' + limitDate.end.getTimeText();
+    }());
+
+    const breakTimeProg = progressBreakTime(now, nowBreakTimeObj);
+    const isAfter = (breakTimeProg.result.Less.is === 'After');
+
+    return notify({
+        title: nowBreakTimeObj.name + ' ' + (isAfter ? '終了' : '開始'),
+        body: body,
+        timeoutSeconds: 10,
+    });
+}
+
+function getNowBreakTimeObj(now) {
+    const notifyNames = [
+        'noon',
+        'evening',
+        'night',
+        'midnight'
+    ];
+
+    const breakTime = KINTARO_MODEL.BREAK_TIME;
+
+    for (let index in notifyNames) {
+        const notifyName = notifyNames[index];
+        const breakTimeObj = breakTime[notifyName];
+
+        const limitDate = breakTimeObj.limitDate(now);
+
+        if (limitDate.start.subDate(now).diffMillSecconds === 0) {
+            return breakTimeObj;
+        }
+
+        if (limitDate.end.subDate(now).diffMillSecconds === 0) {
+            return breakTimeObj;
+        }
+    }
+
+    return undefined;
 }
 
 function setDocumentTitle(nowProgress) {
