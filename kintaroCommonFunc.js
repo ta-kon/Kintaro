@@ -1,6 +1,12 @@
 // IE11の場合は、プッシュ通知が行えず、push.jsで通知可能判定となってしまうため、修正する。
 const isIE = (window.navigator.userAgent.indexOf('Trident') !== -1);
 
+function floor(num, digit) {
+    const calcDigit = Math.pow(10, -digit);
+    const number = num * calcDigit;
+    return Math.floor(number) / calcDigit;
+}
+
 function fillZero2(num) {
     return ('0' + parseInt(num)).slice(-2);
 }
