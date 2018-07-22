@@ -11,13 +11,13 @@ const CashFiles = [
     'https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.5/push.min.js',
     'https://cdnjs.cloudflare.com/ajax/libs/decimal.js/10.0.1/decimal.min.js',
     'https://pages-themes.github.io/slate/assets/images/blacktocat.png',
-    '/kintaroCommonFunc.js',
-    '/kintaroModel.js',
-    '/kintaroCalc.js',
-    '/kintaroView.js',
-    '/kintaroNotify.js',
-    '/kintaro.css',
-    '/',
+    './kintaroCommonFunc.js',
+    './kintaroModel.js',
+    './kintaroCalc.js',
+    './kintaroView.js',
+    './kintaroNotify.js',
+    './kintaro.css',
+    './',
 ];
 
 let ExistFileUrl = {};
