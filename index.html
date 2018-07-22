@@ -4,10 +4,34 @@
 <head>
     <meta charset="UTF-8" lang="ja">
     <meta http-equiv="content-language" content="ja">
+    <link rel="manifest" href="/manifest.json">
     <meta name="author" content="ta-kon">
     <meta name="theme-color" content="#4E5D6C">
     <meta name="description" content="作業時間の計算を行います。">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register('./kintaroServiceWorker.js', { scope: './' })
+                    .then(registration => {
+                        console.log(registration);
+                    }).catch(error => {
+                        console.error(error);
+                    });
+            });
+        }
+
+        window.addEventListener('online', e => {
+            console.log('online');
+        }, false);
+
+        window.addEventListener('offline', e => {
+            console.log('offline');
+        }, false);
+    </script>
 
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
