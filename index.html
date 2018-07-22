@@ -5,6 +5,7 @@
     <meta charset="UTF-8" lang="ja">
     <meta http-equiv="content-language" content="ja">
     <meta name="author" content="ta-kon">
+    <meta name="theme-color" content="#4E5D6C">
     <meta name="description" content="作業時間の計算を行います。">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -90,16 +91,14 @@
                         <input type="text" class="btn btn-secondary input-time" value="18:00" id="workTime-end">
                     </td>
                     <td id="workTime">
-                        <dl>
-                            <span id="workTime-15min">
-                                <dt>15分単位</dt>
-                                <dd class="decTime">Not Runnning javascript</dd>
-                            </span>
-                            <span id="workTime-real">
-                                <dt>1分単位</dt>
-                                <dd class="decTime">Not Runnning javascript</dd>
-                            </span>
-                        </dl>
+                        <span id="workTime-15min">
+                            <div class="font-weight-bold">15分単位</div>
+                            <div class="decTime">Not Runnning javascript</div>
+                        </span>
+                        <span id="workTime-real">
+                            <div class="font-weight-bold">1分単位</div>
+                            <div class="decTime">Not Runnning javascript</div>
+                        </span>
                     </td>
                 </tr>
             </tbody>
@@ -195,7 +194,7 @@
 
         <button id="notifyBtn" class="btn btn-secondary" onclick="notifyBtn(this)">ブラウザにプッシュ通知を設定</button>
 
-        <a id="github" href="https://github.com/ta-kon/Kintaro" target="_blank">
+        <a id="github" href="https://github.com/ta-kon/Kintaro" target="_blank" rel="noopener">
             View on GitHub
         </a>
     </div>
