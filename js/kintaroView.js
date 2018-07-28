@@ -12,7 +12,7 @@ window.addEventListener('load', function () {
 
 function marginTopBody() {
     const navbar = document.querySelector('div.navbar');
-    document.body.style.paddingTop = (navbar.offsetHeight * 1.3) + 'px';
+    document.body.style.paddingTop = Math.ceil(navbar.offsetHeight * 1.3) + 'px';
 }
 
 function updateProgresAll() {
